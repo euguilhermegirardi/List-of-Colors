@@ -1,16 +1,17 @@
 import React from 'react';
+import { useInput } from '../hooks/useInput';
+import { useColors } from '../context/ColorProvider';
 
-import { useInput } from './hooks/useInput';
-
-export default function AddColorForm({ onNewColor = f => f }) {
+export default function AddColorForm() {
   const [titleProps, resetTitle] = useInput("");
   const [colorProps, resetColor] = useInput("#000");
+  const { addColor } = useColors();
 
   const submit = e => {
     // Prevents the browser from trying to submit the form with POST request, forcing it to reload the page.
     e.preventDefault();
 
-    onNewColor(titleProps.value, colorProps.value);
+    addColor(titleProps.value, colorProps.value);
     resetTitle();
     resetColor();
   };
@@ -24,12 +25,7 @@ export default function AddColorForm({ onNewColor = f => f }) {
         required
       />
 
-      <input
-        {...colorProps}
-        type="text"
-        required
-      />
-
+      <input {...colorProps} type="color" required/>
       <button>ADD</button>
     </form>
   );
